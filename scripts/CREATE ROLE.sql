@@ -15,7 +15,7 @@ GRANT SELECT ON ALL TABLES IN SCHEMA public TO readuser;
 -- REVOKE USAGE ON SCHEMA public FROM readuser;
 -- REVOKE SELECT ON ALL TABLES IN SCHEMA public FROM readuser;
 
-# Can do everything PostgREST can
+-- Can do everything PostgREST can
 CREATE ROLE edituser;
 GRANT CONNECT ON DATABASE <<<<DATABASE_NAME>>>> TO edituser;
 GRANT USAGE ON SCHEMA public TO edituser;
