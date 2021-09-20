@@ -5,7 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import CardHeader from "@material-ui/core/CardHeader";
 import Snackbar from "@material-ui/core/Snackbar";
 import TextField from "@material-ui/core/TextField";
-import { SubmitButton } from "./SubmitButton";
+// import { SubmitButton } from "./SubmitButton";
 import Typography from "@material-ui/core/Typography";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -15,10 +15,11 @@ import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 
-import DataTable from "./DataTable.js";
+// import DataTable from "./DataTable.js";
 import RightPaneChips from "./RightPaneChips.js";
 
 import "../styles/QueryBuilder.css";
+import ExternalTransfer from "./ExternalTransfer";
 
 let lib = require("../utils/library.ts");
 const defaultRules = lib.getQBRules();
@@ -52,13 +53,12 @@ export default class RightPane extends Component {
     };
 
     this.handleRowLimitChange = this.handleRowLimitChange.bind(this);
-    this.handleGetExactRowCountToggle = this.handleGetExactRowCountToggle.bind(
-      this
-    );
-    this.handleSubmitButtonClickCancelQuery = this.handleSubmitButtonClickCancelQuery.bind(
-      this
-    );
+    this.handleGetExactRowCountToggle =
+      this.handleGetExactRowCountToggle.bind(this);
+    this.handleSubmitButtonClickCancelQuery =
+      this.handleSubmitButtonClickCancelQuery.bind(this);
     this.handleSubmitButtonClick = this.handleSubmitButtonClick.bind(this);
+    this.prepareHeaders = this.prepareHeaders.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -151,7 +151,7 @@ export default class RightPane extends Component {
             lib.getDbConfig(this.props.dbIndex, "url") + "/" + this.state.table;
           this.setState({ url: url + "?limit=10" });
           if (this.state.table !== "") {
-            this.fetchOutput(url + "?limit=10", true);
+            // this.fetchOutput(url + "?limit=10", true);
           }
         }
       );
@@ -182,7 +182,7 @@ export default class RightPane extends Component {
             lib.getDbConfig(this.props.dbIndex, "url") + "/" + this.state.table;
           this.setState({ url: url + "?limit=10" });
           if (this.state.table !== "") {
-            this.fetchOutput(url + "?limit=10", true);
+            // this.fetchOutput(url + "?limit=10", true);
           }
         }
       );
@@ -206,9 +206,8 @@ export default class RightPane extends Component {
       window.$(
         this.refs.queryBuilder
       ).queryBuilder.constructor.DEFAULTS.operators = lib.getQBOperators();
-      window.$(
-        this.refs.queryBuilder
-      ).queryBuilder.constructor.DEFAULTS.lang = lib.getQBLang();
+      window.$(this.refs.queryBuilder).queryBuilder.constructor.DEFAULTS.lang =
+        lib.getQBLang();
 
       const filters = lib.getQBFilters(
         this.props.dbIndex,
@@ -239,9 +238,8 @@ export default class RightPane extends Component {
     window.$(
       this.refs.queryBuilder
     ).queryBuilder.constructor.DEFAULTS.operators = lib.getQBOperators();
-    window.$(
-      this.refs.queryBuilder
-    ).queryBuilder.constructor.DEFAULTS.lang = lib.getQBLang();
+    window.$(this.refs.queryBuilder).queryBuilder.constructor.DEFAULTS.lang =
+      lib.getQBLang();
     const rules = newRules ? newRules : defaultRules;
     const filters = lib.getQBFilters(
       dbIndex,
@@ -455,10 +453,7 @@ export default class RightPane extends Component {
     return url;
   }
 
-  fetchOutput(url, skipFullCount = false) {
-    // Get rid of the timer
-    clearTimeout(this.timer);
-    this.timer = null;
+  prepareHeaders(skipFullCount = false) {
     let preparedHeaders = {};
     if (this.state.exactRowCount === true && skipFullCount === false) {
       preparedHeaders["Prefer"] = "count=exact";
@@ -469,10 +464,18 @@ export default class RightPane extends Component {
     if (this.props.isLoggedIn && this.props.token) {
       preparedHeaders["Authorization"] = "Bearer " + this.props.token;
     }
+    return preparedHeaders;
+  }
+
+  fetchOutput(url, skipFullCount = false) {
+    // Get rid of the timer
+    clearTimeout(this.timer);
+    this.timer = null;
+    let preparedHeaders = this.prepareHeaders(skipFullCount);
 
     axios
       .get(url, { headers: preparedHeaders, requestId: "qbAxiosReq" })
-      .then((response) => {
+      .then(response => {
         let responseRows = null;
         let totalRows = null;
         if (
@@ -513,7 +516,7 @@ export default class RightPane extends Component {
           }
         );
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("HTTP Req:", error);
         this.setState(
           {
@@ -542,7 +545,7 @@ export default class RightPane extends Component {
   }
 
   // Allows NewRow.js to insert a new row to state.rawData
-  insertNewRow = (row) => {
+  insertNewRow = row => {
     let data = this.state.rawData;
     data.splice(0, 0, row[0]);
     this.setState({
@@ -550,7 +553,7 @@ export default class RightPane extends Component {
     });
   };
 
-  handleSubmitButtonClick = (e) => {
+  handleSubmitButtonClick = e => {
     // Get rid of the timer
     clearTimeout(this.timer);
     this.timer = null;
@@ -691,8 +694,8 @@ export default class RightPane extends Component {
               />
             </Grid>
 
-            <Grid item sm={2} md={2}>
-              {/* SUBMIT FLOATING ACTION BUTTON (FAB) */}
+            {/* <Grid item sm={2} md={2}>
+              {/* SUBMIT FLOATING ACTION BUTTON (FAB) }
               <div
                 title="Run Query"
                 onClick={this.handleSubmitButtonClickCancelQuery}
@@ -707,7 +710,7 @@ export default class RightPane extends Component {
                   error={this.state.submitError}
                 />
               </div>
-            </Grid>
+            </Grid> */}
           </Grid>
 
           <Typography type="subtitle1" style={styleSheet.cardMarginLeftTop}>
@@ -722,7 +725,7 @@ export default class RightPane extends Component {
             increaseRowLimit={this.increaseRowLimit}
           />
 
-          <div style={styleSheet.cardMarginLeftRightTop}>
+          {/* <div style={styleSheet.cardMarginLeftRightTop}>
             <DataTable
               {...this.props}
               table={this.state.table}
@@ -747,7 +750,15 @@ export default class RightPane extends Component {
                   : "No rows found"
               }
             />
-          </div>
+          </div> */}
+          <ExternalTransfer
+            buildURL={() =>
+              this.buildURLFromRules(
+                window.$(this.refs.queryBuilder).queryBuilder("getRules")
+              )
+            }
+            prepareHeaders={this.prepareHeaders}
+          />
         </Paper>
 
         <Snackbar
