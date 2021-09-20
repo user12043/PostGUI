@@ -54,7 +54,8 @@ export default class Auth {
 
   isAuthenticated() {
     // Return true iff user is authenticated and jwt is still valid
-    let emailRegEx = /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // From http://emailregex.com/
+    let emailRegEx =
+      /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // From http://emailregex.com/
 
     if (
       this.jwtTokenExpiry > Date.now() &&
@@ -81,7 +82,7 @@ export default class Auth {
           email: this.userEmail,
           pass: this.userPassword
         });
-        let data = rawResp.data[0];
+        let data = rawResp.data;
         this._setStatusTokenExpiry(true, data.token, data.tokenExpiry);
 
         return data;
@@ -101,11 +102,13 @@ export default class Auth {
   }
 
   _toLocalStorage() {
-    //localStorage.setItem("name", this.name);
+    localStorage.setItem("userEmail", this.userEmail);
+    localStorage.setItem("userPassword", this.userPassword);
   }
 
   _fromLocalStorage() {
-    //this.name = localStorage.getItem("name");
+    this.userEmail = localStorage.getItem("userEmail");
+    this.userPassword = localStorage.getItem("userPassword");
   }
 
   toString() {

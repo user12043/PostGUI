@@ -50,3 +50,7 @@ jspm_packages
 
 #Webstorm dir
 .idea
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
