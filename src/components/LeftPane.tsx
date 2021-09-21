@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import Divider from '@material-ui/core/Divider';
+import Divider from "@material-ui/core/Divider";
 
-import DbPicker from './DbPicker';
-import DbSchema from './DbSchema.js';
-
+import DbPicker from "./DbPicker";
+import DbSchema from "./DbSchema.js";
 
 interface ILeftPaneProps {
   leftPaneVisibility: boolean;
   dbIndex: number;
+  isLoggedIn: boolean;
 
   changeSearchTerm: Function;
   changeDbIndex: Function;
@@ -26,13 +26,13 @@ export const LeftPane: React.FunctionComponent<ILeftPaneProps> = props => {
   let rootClasses =
     props.leftPaneVisibility === true ? styleSheet.root : styleSheet.rootHide;
 
-  return (
+  return props?.isLoggedIn ? (
     <div style={{ ...rootClasses }}>
       <DbPicker {...props} />
       <Divider />
       <DbSchema {...props} />
     </div>
-  );
+  ) : null;
 };
 
 const styleSheet: any = {
@@ -42,7 +42,7 @@ const styleSheet: any = {
     float: "left",
     opacity: 1,
     visibility: "visible",
-    transition: "width 0.25s, visibility 0.2s, opacity 0.12s"
+    transition: "width 0.25s, visibility 0.2s, opacity 0.12s",
   },
   rootHide: {
     width: "0%",
@@ -50,12 +50,12 @@ const styleSheet: any = {
     float: "left",
     opacity: 0,
     visibility: "hidden",
-    transition: "width 0.25s, visibility 0.2s, opacity 0.12s"
+    transition: "width 0.25s, visibility 0.2s, opacity 0.12s",
   },
   column: {
-    marginLeft: 27
+    marginLeft: 27,
   },
   lowBottomPadding: {
-    paddingBottom: 0
-  }
+    paddingBottom: 0,
+  },
 };

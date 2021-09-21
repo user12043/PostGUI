@@ -15,9 +15,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import HistoryIcon from "@material-ui/icons/History";
 import HelpIcon from "@material-ui/icons/HelpOutline";
 
-import FeatureDiscoveryPrompt from "./FeatureDiscoveryPrompt/FeatureDiscoveryPrompt";
-import indigo from "@material-ui/core/colors/indigo";
-import pink from "@material-ui/core/colors/pink";
+// import FeatureDiscoveryPrompt from "./FeatureDiscoveryPrompt/FeatureDiscoveryPrompt";
+// import indigo from "@material-ui/core/colors/indigo";
+// import pink from "@material-ui/core/colors/pink";
 
 import Button from "@material-ui/core/Button";
 
@@ -34,7 +34,7 @@ export default class Navigation extends Component {
       loginDialogOpen: false,
       isHelpOpen: false,
     };
-    this.changeSearchTermDebounce = _.debounce((value) => {
+    this.changeSearchTermDebounce = _.debounce(value => {
       this.props.changeSearchTerm(value);
       this.setState({
         isSearchBarFdpOpen: true,
@@ -80,7 +80,7 @@ export default class Navigation extends Component {
     });
   };
 
-  handleHelpToggle = (e) => {
+  handleHelpToggle = e => {
     this.setState({
       isHelpOpen: !this.state.isHelpOpen,
     });
@@ -116,7 +116,9 @@ export default class Navigation extends Component {
       <>
         <AppBar position="absolute">
           <Toolbar>
-            <FeatureDiscoveryPrompt
+            {this.props.isLoggedIn ? (
+              <>
+                {/* <FeatureDiscoveryPrompt
               onClose={() => this.setState({ isSearchBarFdpOpen: false })}
               open={
                 !this.props.leftPaneVisibility &&
@@ -129,26 +131,26 @@ export default class Navigation extends Component {
               subtractFromTopPos={0}
               opacity={0.95}
               description="Choose a table to query from the database schema."
-            >
-              <IconButton
-                color="inherit"
-                aria-label="Menu"
-                onClick={this.props.toggleLeftPane.bind(this)}
-              >
-                <MenuIcon />
-              </IconButton>
-            </FeatureDiscoveryPrompt>
+            > */}
+                <IconButton
+                  color="inherit"
+                  aria-label="Menu"
+                  onClick={this.props.toggleLeftPane.bind(this)}
+                >
+                  <MenuIcon />
+                </IconButton>
+                {/* </FeatureDiscoveryPrompt> */}
 
-            <Typography
-              variant="h6"
-              color="inherit"
-              style={styleSheet.dbTitleFlex}
-            >
-              {dbTitle}
-            </Typography>
+                <Typography
+                  variant="h6"
+                  color="inherit"
+                  style={styleSheet.dbTitleFlex}
+                >
+                  {dbTitle}
+                </Typography>
 
-            <div style={styleSheet.searchBarFlex}>
-              <FeatureDiscoveryPrompt
+                <div style={styleSheet.searchBarFlex}>
+                  {/* <FeatureDiscoveryPrompt
                 onClose={() => this.setState({ isSearchBarFdpOpen: false })}
                 open={this.state.isSearchBarFdpOpen}
                 backgroundColor={indigo[500]}
@@ -157,52 +159,55 @@ export default class Navigation extends Component {
                 subtractFromTopPos={200}
                 opacity={0.95}
                 description="Can also tag each term with '[table]' or '[column]'. For example, people[table] firstname[column]."
-              >
-                <TextField
-                  id="search"
-                  placeholder="Search"
-                  onKeyPress={this.changeSearchTerm.bind(this)}
-                  onChange={this.changeSearchTerm.bind(this)}
-                  onFocus={this.changeSearchTerm.bind(this)}
-                  type="search"
-                  style={{ ...styleSheet.searchBar, ...searchBarFdpOpenStyles }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon
-                          style={
-                            this.state.isSearchBarFdpOpen
-                              ? { fill: "rgba(0,0,0,0.5)" }
-                              : { fill: "rgba(255,255,255,0.75)" }
-                          }
-                        />
-                      </InputAdornment>
-                    ),
-                  }}
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                  spellCheck="false"
-                />
-              </FeatureDiscoveryPrompt>
-            </div>
-            <IconButton
-              style={styleSheet.rightIconsFlex}
-              color="inherit"
-              aria-label="History"
-              onClick={this.props.toggleHistoryPane.bind(this)}
-            >
-              <HistoryIcon style={styleSheet.floatRight} />
-            </IconButton>
-            <IconButton
-              style={styleSheet.rightIconsFlex}
-              color="inherit"
-              aria-label="Help"
-              onClick={this.handleHelpToggle}
-            >
-              <HelpIcon style={styleSheet.floatRight} />
-            </IconButton>
-            <FeatureDiscoveryPrompt
+              > */}
+                  <TextField
+                    id="search"
+                    placeholder="Search"
+                    onKeyPress={this.changeSearchTerm.bind(this)}
+                    onChange={this.changeSearchTerm.bind(this)}
+                    onFocus={this.changeSearchTerm.bind(this)}
+                    type="search"
+                    style={{
+                      ...styleSheet.searchBar,
+                      ...searchBarFdpOpenStyles,
+                    }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon
+                            style={
+                              this.state.isSearchBarFdpOpen
+                                ? { fill: "rgba(0,0,0,0.5)" }
+                                : { fill: "rgba(255,255,255,0.75)" }
+                            }
+                          />
+                        </InputAdornment>
+                      ),
+                    }}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck="false"
+                  />
+                  {/* </FeatureDiscoveryPrompt> */}
+                </div>
+                <IconButton
+                  style={styleSheet.rightIconsFlex}
+                  color="inherit"
+                  aria-label="History"
+                  onClick={this.props.toggleHistoryPane.bind(this)}
+                >
+                  <HistoryIcon style={styleSheet.floatRight} />
+                </IconButton>
+                <IconButton
+                  style={styleSheet.rightIconsFlex}
+                  color="inherit"
+                  aria-label="Help"
+                  onClick={this.handleHelpToggle}
+                >
+                  <HelpIcon style={styleSheet.floatRight} />
+                </IconButton>
+                {/* <FeatureDiscoveryPrompt
               onClose={() => {
                 this.setState({ isLoginFdpOpen: false });
               }}
@@ -222,18 +227,20 @@ export default class Navigation extends Component {
               subtractFromTopPos={50}
               opacity={0.95}
               description="Provide your credentials for full access."
+            > */}
+              </>
+            ) : null}
+            <Button
+              onClick={() => {
+                this.handleLoginButtonClick();
+              }}
+              color="default"
+              variant="contained"
+              style={styleSheet.rightIconsFlex}
             >
-              <Button
-                onClick={() => {
-                  this.handleLoginButtonClick();
-                }}
-                color="default"
-                variant="contained"
-                style={styleSheet.rightIconsFlex}
-              >
-                {this.props.isLoggedIn ? "Logout" : "Login"}
-              </Button>
-            </FeatureDiscoveryPrompt>
+              {this.props.isLoggedIn ? "Logout" : "Login"}
+            </Button>
+            {/* </FeatureDiscoveryPrompt> */}
           </Toolbar>
           <LoginDialog
             dbName={dbTitle.replace("Database", "db").replace("database", "db")}
