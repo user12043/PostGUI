@@ -9,6 +9,7 @@ interface ILeftPaneProps {
   leftPaneVisibility: boolean;
   dbIndex: number;
   isLoggedIn: boolean;
+  loginError?: any;
 
   changeSearchTerm: Function;
   changeDbIndex: Function;

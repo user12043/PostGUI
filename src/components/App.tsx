@@ -1,17 +1,16 @@
-import 'typeface-roboto';
-import '../styles/index.css';
+import "typeface-roboto";
+import "../styles/index.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import { INITIAL_ROW_LIMIT } from '../data/constants';
-import { IConfigDatabase } from '../data/models/configModel';
-import Auth from './Auth.js';
-import HistoryPane from './HistoryPane';
-import { LeftPane } from './LeftPane';
-import Navigation from './Navigation.js';
-import RightPane from './RightPane.js';
-
+import { INITIAL_ROW_LIMIT } from "../data/constants";
+import { IConfigDatabase } from "../data/models/configModel";
+import Auth from "./Auth.js";
+import HistoryPane from "./HistoryPane";
+import { LeftPane } from "./LeftPane";
+import Navigation from "./Navigation.js";
+import RightPane from "./RightPane.js";
 
 let lib = require("../utils/library.ts");
 let auth: Nullable<Auth> = null;
@@ -35,6 +34,7 @@ interface IAppState {
   userName: string;
   token: Nullable<string>;
   isLoggedIn: boolean;
+  loginError?: any;
 }
 
 export default class Layout extends React.Component<IAppProps, IAppState> {
@@ -61,7 +61,7 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
       dbPkInfo: null,
       userName: "Unknown username",
       token: null,
-      isLoggedIn: false
+      isLoggedIn: false,
     };
 
     auth = new Auth(parsedURL["db"] || 0);
@@ -148,9 +148,8 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
     }
 
     // Extract the exactCount
-    let exactCountExecResults: Nullable<RegExpExecArray> = exactCountRx.exec(
-      url
-    );
+    let exactCountExecResults: Nullable<RegExpExecArray> =
+      exactCountRx.exec(url);
     let exactCount: boolean;
     if (exactCountExecResults) {
       exactCount =
@@ -164,25 +163,25 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
       table: table,
       urlRules: query,
       rowLimit: rowLimit,
-      exactCount: exactCount
+      exactCount: exactCount,
     };
   }
 
   toggleLeftPane() {
     this.setState({
-      leftPaneVisibility: !this.state.leftPaneVisibility
+      leftPaneVisibility: !this.state.leftPaneVisibility,
     });
   }
 
   toggleHistoryPane() {
     this.setState({
-      historyPaneVisibility: !this.state.historyPaneVisibility
+      historyPaneVisibility: !this.state.historyPaneVisibility,
     });
   }
 
   closeHistoryPane() {
     this.setState({
-      historyPaneVisibility: false
+      historyPaneVisibility: false,
     });
   }
 
@@ -191,7 +190,7 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
       dbIndex: newIndex,
       isLoggedIn: false,
       token: null,
-      userName: "Unknown username"
+      userName: "Unknown username",
     });
 
     if (auth) {
@@ -203,13 +202,13 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
           this.setState({
             token: resp.jwtToken,
             userName: resp.name,
-            isLoggedIn: true
+            isLoggedIn: true,
           });
         } else {
           this.setState({
             isLoggedIn: false,
             token: null,
-            userName: "Unknown username"
+            userName: "Unknown username",
           });
         }
       });
@@ -222,43 +221,43 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
 
   changeTable(newTable: string) {
     this.setState({
-      table: newTable
+      table: newTable,
     });
   }
 
   changeRules(newRules: string) {
     this.setState({
-      rulesFromHistoryPane: newRules
+      rulesFromHistoryPane: newRules,
     });
   }
 
   changeDbSchemaDefinitions(newDefinitions: string) {
     this.setState({
-      dbSchemaDefinitions: newDefinitions
+      dbSchemaDefinitions: newDefinitions,
     });
   }
 
   changeDbPkInfo(pkInfo: string) {
     this.setState({
-      dbPkInfo: pkInfo
+      dbPkInfo: pkInfo,
     });
   }
 
   changeColumns(newColumns: Array<string>) {
     this.setState({
-      columns: newColumns
+      columns: newColumns,
     });
   }
 
   addToHistory(newUrl: string, newRules: string) {
     this.setState({
-      newHistoryItem: [newUrl.replace(/\?limit=\d*/g, ""), newRules]
+      newHistoryItem: [newUrl.replace(/\?limit=\d*/g, ""), newRules],
     });
   }
 
   changeVisibleColumns(newVisibleColumns: Array<string>) {
     this.setState({
-      visibleColumns: newVisibleColumns
+      visibleColumns: newVisibleColumns,
     });
   }
 
@@ -269,7 +268,7 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
     this.setState({
       token: null,
       userName: "Unknown username",
-      isLoggedIn: false
+      isLoggedIn: false,
     });
   };
 
@@ -281,13 +280,15 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
           this.setState({
             token: resp.jwtToken,
             userName: resp.name,
-            isLoggedIn: true
+            isLoggedIn: true,
+            loginError: null,
           });
         } else {
           this.setState({
             isLoggedIn: false,
             token: null,
-            userName: "Unknown username"
+            userName: "Unknown username",
+            loginError: resp.loginError,
           });
         }
         if (
@@ -320,7 +321,7 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
           this.setState({
             token: resp.jwtToken,
             userName: resp.name,
-            isLoggedIn: true
+            isLoggedIn: true,
           });
         }
       });

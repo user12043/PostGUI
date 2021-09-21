@@ -9,6 +9,7 @@ export default class Auth {
   userPassword = null;
   jwtToken = null;
   jwtTokenExpiry = null;
+  loginError = null;
 
   constructor(dbIndex) {
     this.dbIndex = dbIndex;
@@ -25,7 +26,8 @@ export default class Auth {
     return {
       isLoggedIn: this.isLoggedIn,
       jwtToken: this.jwtToken,
-      name: this.name || this.userEmail || "Unknown"
+      name: this.name || this.userEmail || "Unknown",
+      loginError: this.loginError,
     };
   }
 
@@ -50,6 +52,7 @@ export default class Auth {
     this.isLoggedIn = false;
     this.jwtToken = null;
     this.jwtTokenExpiry = null;
+    this.loginError = null;
   }
 
   isAuthenticated() {
@@ -80,7 +83,7 @@ export default class Auth {
       try {
         let rawResp = await axios.post(loginUrl, {
           email: this.userEmail,
-          pass: this.userPassword
+          pass: this.userPassword,
         });
         let data = rawResp.data;
         this._setStatusTokenExpiry(true, data.token, data.tokenExpiry);
@@ -89,6 +92,8 @@ export default class Auth {
       } catch (e) {
         this._setStatusTokenExpiry(false, null, 0);
         console.error(e);
+        this._setLoginError(e);
+        return { loginError: e };
       }
     }
   }
@@ -99,6 +104,10 @@ export default class Auth {
     this.jwtToken = token;
     this.jwtTokenExpiry = expiry >= 0 ? expiry : Date.now() + 60 * 60 * 1000;
     this._toLocalStorage();
+  }
+
+  _setLoginError(e) {
+    this.loginError = e;
   }
 
   _toLocalStorage() {
@@ -118,7 +127,8 @@ export default class Auth {
       userEmail: this.userEmail,
       userPassword: this.userPassword,
       jwtToken: this.jwtToken,
-      jwtTokenExpiry: this.jwtTokenExpiry
+      jwtTokenExpiry: this.jwtTokenExpiry,
+      loginError: this.loginError,
     });
   }
 }

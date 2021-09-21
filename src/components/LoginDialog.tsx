@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { Divider } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-
+import { Divider } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
 
 interface ILoginDialogProps {
   dbName: string;
   open: boolean;
+  loginError: any;
 
   setUserEmailPassword: Function;
   handleLoginDialogCloseClick: React.ReactEventHandler<{}>;
@@ -31,7 +31,7 @@ export default class LoginDialog extends Component<
     super(props);
     this.state = {
       email: null,
-      password: null
+      password: null,
     };
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
@@ -41,13 +41,13 @@ export default class LoginDialog extends Component<
   handleLoginClick(e: any) {
     if (this.state.email && this.state.password) {
       this.props.setUserEmailPassword(this.state.email, this.state.password);
-      this.props.handleLoginDialogCloseClick(e);
+      // this.props.handleLoginDialogCloseClick(e);
     }
   }
 
   onChangeHandler(e: any) {
     this.setState({
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
   }
 
@@ -58,14 +58,19 @@ export default class LoginDialog extends Component<
         onClose={this.props.handleLoginDialogCloseClick}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">
-          PostGUI Login{this.props.dbName ? " - " + this.props.dbName : ""}
-        </DialogTitle>
+        <DialogTitle id="form-dialog-title">PostGUI Login</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Provide your credentials for this database, it may allow you more
             privileges.
           </DialogContentText>
+          {this.props?.loginError ? (
+            <DialogContentText style={{ color: "red" }}>
+              {this.props?.loginError?.response?.status === 403
+                ? "Invalid username or password"
+                : `Unknown Error: ${this.props?.loginError?.message}`}
+            </DialogContentText>
+          ) : null}
           <TextField
             autoFocus
             required
@@ -88,6 +93,9 @@ export default class LoginDialog extends Component<
         </DialogContent>
         <Divider />
         <DialogActions>
+          <Button style={{ float: "left" }} onClick={() => {}}>
+            Request new password
+          </Button>
           <Button
             onClick={this.props.handleLoginDialogCloseClick}
             color="default"

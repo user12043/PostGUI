@@ -243,10 +243,10 @@ export default class Navigation extends Component {
             {/* </FeatureDiscoveryPrompt> */}
           </Toolbar>
           <LoginDialog
-            dbName={dbTitle.replace("Database", "db").replace("database", "db")}
             setUserEmailPassword={this.props.setUserEmailPassword}
             open={this.state.loginDialogOpen}
             handleLoginDialogCloseClick={this.handleLoginDialogCloseClick}
+            loginError={this.props.loginError}
           />
           <Help
             open={this.state.isHelpOpen}
