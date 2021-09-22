@@ -21,6 +21,7 @@ interface ILoginDialogState {
   email: Nullable<string>;
   password: Nullable<string>;
   [x: number]: any;
+  message: Nullable<string>;
 }
 
 export default class LoginDialog extends Component<
@@ -32,6 +33,7 @@ export default class LoginDialog extends Component<
     this.state = {
       email: null,
       password: null,
+      message: null,
     };
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
@@ -49,6 +51,13 @@ export default class LoginDialog extends Component<
     this.setState({
       [e.target.id]: e.target.value,
     });
+  }
+
+  static getDerivedStateFromProps(
+    props: ILoginDialogProps,
+    state: ILoginDialogState
+  ) {
+    return { ...state, message: !props.open ? null : state?.message };
   }
 
   render() {
@@ -69,6 +78,11 @@ export default class LoginDialog extends Component<
               {this.props?.loginError?.response?.status === 403
                 ? "Invalid username or password"
                 : `Unknown Error: ${this.props?.loginError?.message}`}
+            </DialogContentText>
+          ) : null}
+          {this.state?.message ? (
+            <DialogContentText style={{ color: "blue" }}>
+              {this.state.message}
             </DialogContentText>
           ) : null}
           <TextField
@@ -93,7 +107,15 @@ export default class LoginDialog extends Component<
         </DialogContent>
         <Divider />
         <DialogActions>
-          <Button style={{ float: "left" }} onClick={() => {}}>
+          <Button
+            style={{ float: "left" }}
+            onClick={() => {
+              this.setState({
+                ...this.state,
+                message: "Your request sent to the admin",
+              });
+            }}
+          >
             Request new password
           </Button>
           <Button

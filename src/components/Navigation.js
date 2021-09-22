@@ -86,6 +86,13 @@ export default class Navigation extends Component {
     });
   };
 
+  static getDerivedStateFromProps(props, state) {
+    return {
+      ...state,
+      loginDialogOpen: props.isLoggedIn ? false : state.loginDialogOpen,
+    };
+  }
+
   render() {
     let dbTitle =
       lib.getDbConfig(this.props.dbIndex, "title") || "Untitled database";

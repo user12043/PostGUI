@@ -25,15 +25,17 @@ interface ILeftPaneState {}
 
 export const LeftPane: React.FunctionComponent<ILeftPaneProps> = props => {
   let rootClasses =
-    props.leftPaneVisibility === true ? styleSheet.root : styleSheet.rootHide;
+    props.leftPaneVisibility === props.isLoggedIn
+      ? styleSheet.root
+      : styleSheet.rootHide;
 
-  return props?.isLoggedIn ? (
+  return (
     <div style={{ ...rootClasses }}>
       <DbPicker {...props} />
       <Divider />
       <DbSchema {...props} />
     </div>
-  ) : null;
+  );
 };
 
 const styleSheet: any = {
