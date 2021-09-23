@@ -35,6 +35,7 @@ interface IAppState {
   token: Nullable<string>;
   isLoggedIn: boolean;
   loginError?: any;
+  userRole?: Nullable<string>;
 }
 
 export default class Layout extends React.Component<IAppProps, IAppState> {
@@ -203,12 +204,14 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
             token: resp.jwtToken,
             userName: resp.name,
             isLoggedIn: true,
+            userRole: resp.userRole,
           });
         } else {
           this.setState({
             isLoggedIn: false,
             token: null,
             userName: "Unknown username",
+            userRole: null,
           });
         }
       });
@@ -282,6 +285,7 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
             userName: resp.name,
             isLoggedIn: true,
             loginError: null,
+            userRole: resp.userRole,
           });
         } else {
           this.setState({
@@ -289,6 +293,7 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
             token: null,
             userName: "Unknown username",
             loginError: resp.loginError,
+            userRole: null,
           });
         }
         if (
@@ -322,6 +327,7 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
             token: resp.jwtToken,
             userName: resp.name,
             isLoggedIn: true,
+            userRole: resp.userRole,
           });
         }
       });

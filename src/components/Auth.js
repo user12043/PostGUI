@@ -10,6 +10,7 @@ export default class Auth {
   jwtToken = null;
   jwtTokenExpiry = null;
   loginError = null;
+  userRole = null;
 
   constructor(dbIndex) {
     this.dbIndex = dbIndex;
@@ -28,6 +29,7 @@ export default class Auth {
       jwtToken: this.jwtToken,
       name: this.name || this.userEmail || "Unknown",
       loginError: this.loginError,
+      userRole: this.userRole,
     };
   }
 
@@ -87,6 +89,7 @@ export default class Auth {
         });
         let data = rawResp.data;
         this._setStatusTokenExpiry(true, data.token, data.tokenExpiry);
+        this._setUserRole(data?.role);
 
         return data;
       } catch (e) {
@@ -108,6 +111,10 @@ export default class Auth {
 
   _setLoginError(e) {
     this.loginError = e;
+  }
+
+  _setUserRole(role) {
+    this.userRole = role;
   }
 
   _toLocalStorage() {
