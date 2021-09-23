@@ -85,7 +85,8 @@ $$;
 -- As described in JWT from SQL, we’ll create a JWT inside our login function.
 -- Note that you’ll need to adjust the secret key which is hard-coded in this example to a secure (at least thirty-two character) secret of your choosing.
 CREATE TYPE basic_auth.jwt_token AS (
-  token text
+  token text,
+  role text
 );
 
 CREATE OR REPLACE FUNCTION login(email TEXT, pass TEXT) RETURNs basic_auth.jwt_token
@@ -103,7 +104,7 @@ BEGIN
 
   SELECT sign(
       row_to_json(r), 'fkajs;dlkfjieondskj82naj8jkldjkldas87'
-    ) AS token
+    ) AS token, _role as role
     from (
       SELECT _role AS role, login.email AS email,
          extract(epoch from now())::integer + 60*60 AS exp
