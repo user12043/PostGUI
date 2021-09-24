@@ -14,6 +14,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 import HistoryIcon from "@material-ui/icons/History";
 import HelpIcon from "@material-ui/icons/HelpOutline";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 // import FeatureDiscoveryPrompt from "./FeatureDiscoveryPrompt/FeatureDiscoveryPrompt";
 // import indigo from "@material-ui/core/colors/indigo";
@@ -205,6 +206,13 @@ export default class Navigation extends Component {
                   onClick={this.props.toggleHistoryPane.bind(this)}
                 >
                   <HistoryIcon style={styleSheet.floatRight} />
+                </IconButton>
+                <IconButton
+                  style={styleSheet.rightIconsFlex}
+                  color="inherit"
+                  aria-label="Settings"
+                >
+                  <SettingsIcon />
                 </IconButton>
                 <IconButton
                   style={styleSheet.rightIconsFlex}
