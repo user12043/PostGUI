@@ -751,6 +751,7 @@ export default class RightPane extends Component {
               }
             />
           </div> */}
+          <br />
           <ExternalTransfer
             buildURL={() =>
               this.buildURLFromRules(

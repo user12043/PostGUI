@@ -36,7 +36,7 @@ export default class RightPaneChips extends Component {
     });
   }
   render() {
-    let rowCountChipLabel =
+    /* let rowCountChipLabel =
       "Displaying " +
       String(this.props.rows || 0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
       " rows";
@@ -50,10 +50,10 @@ export default class RightPaneChips extends Component {
           ","
         ) +
         " rows";
-    }
+    } */
     return (
       <div style={styleSheet.row}>
-        <FeatureDiscoveryPrompt
+        {/* <FeatureDiscoveryPrompt
           onClose={() => this.setState({ isTip1FdpOpen: false })}
           open={this.state.isTip1FdpOpen}
           backgroundColor={grey[600]}
@@ -61,26 +61,26 @@ export default class RightPaneChips extends Component {
           subtractFromTopPos={60}
           opacity={0.95}
           description="Keep track of rows count to ensure full query result is displayed. Increase 'Row-limit' and enable 'Get exact row count' option to ensure full result."
-        >
-          <Chip
-            color={"secondary"}
-            variant="outlined"
-            label={rowCountChipLabel}
-            onMouseEnter={() => {
-              this.timer = setTimeout(() => {
-                this.setState({
-                  isTip1FdpOpen: true,
-                });
-              }, 250);
-            }}
-            onMouseLeave={() => {
-              this.setState({ isTip1FdpOpen: false });
-              clearTimeout(this.timer);
-            }}
-            key={1}
-            style={styleSheet.chip}
-          />
-        </FeatureDiscoveryPrompt>
+        > */}
+        {/* <Chip
+          color={"secondary"}
+          variant="outlined"
+          label={rowCountChipLabel}
+          onMouseEnter={() => {
+            this.timer = setTimeout(() => {
+              this.setState({
+                isTip1FdpOpen: true,
+              });
+            }, 250);
+          }}
+          onMouseLeave={() => {
+            this.setState({ isTip1FdpOpen: false });
+            clearTimeout(this.timer);
+          }}
+          key={1}
+          style={styleSheet.chip}
+        /> */}
+        {/* </FeatureDiscoveryPrompt> */}
 
         {this.state.rows === this.state.rowLimit &&
         this.state.rows !== this.state.maxRows ? (
@@ -148,7 +148,7 @@ export default class RightPaneChips extends Component {
         ) : (
           <div />
         )}
-        <Chip label={this.state.tip} key={4} style={styleSheet.chip} />
+        {/* <Chip label={this.state.tip} key={4} style={styleSheet.chip} /> */}
       </div>
     );
   }
