@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import LoginDialog from "./LoginDialog";
-import Help from "./Help.js";
+import SettingsModal from "./Settings/SettingsModal";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -13,8 +13,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 import HistoryIcon from "@material-ui/icons/History";
-import HelpIcon from "@material-ui/icons/HelpOutline";
-import SettingsIcon from "@material-ui/icons/Settings";
+import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 
 // import FeatureDiscoveryPrompt from "./FeatureDiscoveryPrompt/FeatureDiscoveryPrompt";
 // import indigo from "@material-ui/core/colors/indigo";
@@ -33,7 +32,7 @@ export default class Navigation extends Component {
       isSearchBarFdpOpen: false,
       isLoginFdpOpen: null,
       loginDialogOpen: false,
-      isHelpOpen: false,
+      isSettingsModalOpen: false,
     };
     this.changeSearchTermDebounce = _.debounce(value => {
       this.props.changeSearchTerm(value);
@@ -59,8 +58,8 @@ export default class Navigation extends Component {
 
   changeSearchTerm(e) {
     /*if (e && ((e.key && e.key === 'Enter') || !e.target.value)) {
-			this.props.changeSearchTerm(e.target.value);
-		}*/
+      this.props.changeSearchTerm(e.target.value);
+    }*/
     this.changeSearchTermDebounce(e.target.value);
   }
 
@@ -81,9 +80,9 @@ export default class Navigation extends Component {
     });
   };
 
-  handleHelpToggle = e => {
+  handleSettingsToggle = (e) => {
     this.setState({
-      isHelpOpen: !this.state.isHelpOpen,
+      isSettingsModalOpen: !this.state.isSettingsModalOpen,
     });
   };
 
@@ -210,17 +209,10 @@ export default class Navigation extends Component {
                 <IconButton
                   style={styleSheet.rightIconsFlex}
                   color="inherit"
-                  aria-label="Settings"
-                >
-                  <SettingsIcon />
-                </IconButton>
-                <IconButton
-                  style={styleSheet.rightIconsFlex}
-                  color="inherit"
                   aria-label="Help"
-                  onClick={this.handleHelpToggle}
+                  onClick={this.handleSettingsToggle}
                 >
-                  <HelpIcon style={styleSheet.floatRight} />
+                  <SettingsRoundedIcon style={styleSheet.floatRight} />
                 </IconButton>
                 {/* <FeatureDiscoveryPrompt
               onClose={() => {
@@ -263,9 +255,9 @@ export default class Navigation extends Component {
             handleLoginDialogCloseClick={this.handleLoginDialogCloseClick}
             loginError={this.props.loginError}
           />
-          <Help
-            open={this.state.isHelpOpen}
-            handleHelpToggle={this.handleHelpToggle}
+          <SettingsModal
+            open={this.state.isSettingsModalOpen}
+            handleSettingsToggle={this.handleSettingsToggle}
           />
         </AppBar>
       </>
