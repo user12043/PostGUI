@@ -25,7 +25,7 @@ interface ILeftPaneState {}
 
 export const LeftPane: React.FunctionComponent<ILeftPaneProps> = props => {
   let rootClasses =
-    props.leftPaneVisibility === props.isLoggedIn
+    props.leftPaneVisibility && props.isLoggedIn
       ? styleSheet.root
       : styleSheet.rootHide;
 
