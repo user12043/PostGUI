@@ -423,7 +423,7 @@ export default class RightPane extends Component {
       url += "&limit=" + this.state.rowLimit;
 
       // Add SELECT columns... i.e. which columsn to retrieve
-      //url += "&select=" + this.state.selectColumns;
+      url += "&select=" + this.props.visibleColumns.join(",");
     } else {
       /* else if (this.state.selectColumns !== null && this.state.selectColumns !== [] && this.state.selectColumns !== "") {
 		            // Add SELECT columns... but this time, only selected columns, NO FILTERS
