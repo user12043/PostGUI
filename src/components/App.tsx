@@ -55,7 +55,7 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
       columns: [],
       newHistoryItem: [],
       visibleColumns: [],
-      leftPaneVisibility: true,
+      leftPaneVisibility: false,
       historyPaneVisibility: false,
       searchTerm: "",
       dbSchemaDefinitions: null,
@@ -320,7 +320,7 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
     }
 
     // TRY TO GET a token usign existing credentials
-    if (auth) {
+    /* if (auth) {
       auth.getUserDetails().then(resp => {
         if (resp.isLoggedIn) {
           this.setState({
@@ -331,7 +331,7 @@ export default class Layout extends React.Component<IAppProps, IAppState> {
           });
         }
       });
-    }
+    } */
   }
 
   render() {
