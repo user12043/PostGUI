@@ -107,17 +107,13 @@ export default class LoginDialog extends Component<
         </DialogContent>
         <Divider />
         <DialogActions>
-          <Button
-            style={{ float: "left" }}
-            onClick={() => {
-              this.setState({
-                ...this.state,
-                message: "Your request sent to the admin",
-              });
-            }}
+          <a
+            href={`mailto:info@arcanor.com?subject=Password reset request&body=Requesting new password for account: ${
+              this.state.email || ""
+            }`}
           >
             Request new password
-          </Button>
+          </a>
           <Button
             onClick={this.props.handleLoginDialogCloseClick}
             color="default"
