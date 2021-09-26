@@ -119,11 +119,15 @@ export default class Auth {
 
   _toLocalStorage() {
     localStorage.setItem("userEmail", this.userEmail);
+    localStorage.setItem("userRole", this.userRole);
+    localStorage.setItem("token", this.jwtToken);
     localStorage.setItem("userPassword", this.userPassword);
   }
 
   _fromLocalStorage() {
     this.userEmail = localStorage.getItem("userEmail");
+    this.userRole = localStorage.getItem("userRole");
+    this.jwtToken = localStorage.getItem("token");
     this.userPassword = localStorage.getItem("userPassword");
   }
 
