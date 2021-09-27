@@ -20,6 +20,7 @@ import RightPaneChips from "./RightPaneChips.js";
 
 import "../styles/QueryBuilder.css";
 import ExternalTransfer from "./ExternalTransfer";
+import { FormControl, FormLabel, Radio, RadioGroup } from "@material-ui/core";
 
 let lib = require("../utils/library.ts");
 const defaultRules = lib.getQBRules();
@@ -50,6 +51,7 @@ export default class RightPane extends Component {
       snackBarMessage: "Unknown error occured",
       rowLimit: Math.min(this.props.rowLimit, maxRowsInOutput) || 25000,
       url: "",
+      outputFormat: "csv",
     };
 
     this.handleRowLimitChange = this.handleRowLimitChange.bind(this);
@@ -59,6 +61,8 @@ export default class RightPane extends Component {
       this.handleSubmitButtonClickCancelQuery.bind(this);
     this.handleSubmitButtonClick = this.handleSubmitButtonClick.bind(this);
     this.prepareHeaders = this.prepareHeaders.bind(this);
+    this.handleOutputFormatChange = this.handleOutputFormatChange.bind(this);
+    this.showAlert = this.showAlert.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -431,20 +435,7 @@ export default class RightPane extends Component {
 		        }*/
       url += "?limit=" + this.state.rowLimit;
       // TODO: display a Snack bar showing an error!!!
-      this.setState(
-        {
-          snackBarVisibility: true,
-          snackBarMessage: "Incomplete query",
-        },
-        () => {
-          this.timer = setTimeout(() => {
-            this.setState({
-              snackBarVisibility: false,
-              snackBarMessage: "Unknown error",
-            });
-          }, 2500);
-        }
-      );
+      this.showAlert("Incomplete Query");
     }
 
     // Send updated URL to the HistoryPane
@@ -463,6 +454,12 @@ export default class RightPane extends Component {
 
     if (this.props.isLoggedIn && this.props.token) {
       preparedHeaders["Authorization"] = "Bearer " + this.props.token;
+    }
+
+    if (this.state.outputFormat === "json") {
+      preparedHeaders["Accept"] = "application/json";
+    } else if (this.state.outputFormat === "csv") {
+      preparedHeaders["Accept"] = "text/csv";
     }
     return preparedHeaders;
   }
@@ -618,6 +615,27 @@ export default class RightPane extends Component {
     );
   }
 
+  handleOutputFormatChange(e) {
+    this.setState({ outputFormat: e.target.value });
+  }
+
+  showAlert(m) {
+    this.setState(
+      {
+        snackBarVisibility: true,
+        snackBarMessage: m,
+      },
+      () => {
+        this.timer = setTimeout(() => {
+          this.setState({
+            snackBarVisibility: false,
+            snackBarMessage: "Unknown error",
+          });
+        }, 2500);
+      }
+    );
+  }
+
   render() {
     let tableRename = lib.getTableConfig(
       this.props.dbIndex,
@@ -693,6 +711,28 @@ export default class RightPane extends Component {
                 label={"Get exact row count"}
               />
             </Grid>
+            <Grid>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Output Format</FormLabel>
+                <RadioGroup
+                  ariia-label="outputFormat"
+                  value={this.state.outputFormat}
+                  name="outputFormat"
+                  onChange={this.handleOutputFormatChange}
+                >
+                  <FormControlLabel
+                    value="csv"
+                    control={<Radio />}
+                    label="CSV"
+                  />
+                  <FormControlLabel
+                    value="json"
+                    control={<Radio />}
+                    label="JSON"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
 
             {/* <Grid item sm={2} md={2}>
               {/* SUBMIT FLOATING ACTION BUTTON (FAB) }
@@ -759,6 +799,7 @@ export default class RightPane extends Component {
               )
             }
             prepareHeaders={this.prepareHeaders}
+            onResult={this.showAlert}
           />
         </Paper>
 
@@ -776,8 +817,7 @@ export default class RightPane extends Component {
               style={styleSheet.close}
               onClick={this.handleRequestClose}
             >
-              {" "}
-              <CloseIcon />{" "}
+              <CloseIcon />
             </IconButton>,
           ]}
         />

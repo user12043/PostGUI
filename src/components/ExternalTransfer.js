@@ -8,16 +8,16 @@ import {
 import axios from "axios";
 import React from "react";
 
-const ExternalTransfer = ({ buildURL, prepareHeaders }) => {
+const ExternalTransfer = ({ buildURL, prepareHeaders, onResult }) => {
   const action = async () => {
     try {
       const response = await axios.post("http://localhost:8080/query", {
         url: buildURL(),
         headers: prepareHeaders(),
       });
-      return alert("OK: " + response);
+      onResult(`${response.data?.resultCount} row(s) affected`);
     } catch (error) {
-      return alert(error);
+      onResult(error);
     }
   };
 
