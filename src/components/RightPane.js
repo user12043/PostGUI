@@ -52,6 +52,8 @@ export default class RightPane extends Component {
       rowLimit: Math.min(this.props.rowLimit, maxRowsInOutput) || 25000,
       url: "",
       outputFormat: "csv",
+      distinct: false,
+      outFileName: "output.csv",
     };
 
     this.handleRowLimitChange = this.handleRowLimitChange.bind(this);
@@ -63,6 +65,8 @@ export default class RightPane extends Component {
     this.prepareHeaders = this.prepareHeaders.bind(this);
     this.handleOutputFormatChange = this.handleOutputFormatChange.bind(this);
     this.showAlert = this.showAlert.bind(this);
+    this.handleGetDistinctToggle = this.handleGetDistinctToggle.bind(this);
+    this.handleOutFileNameChange = this.handleOutFileNameChange.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -404,7 +408,14 @@ export default class RightPane extends Component {
   // Based on the extracted rules, it builds a PostgREST compliant URL for API call
   buildURLFromRules(rules) {
     let url =
-      lib.getDbConfig(this.props.dbIndex, "url") + "/" + this.state.table;
+      lib.getDbConfig(this.props.dbIndex, "url") +
+      "/" +
+      (this.state.distinct ? "rpc/get_distinct" : this.state.table);
+
+    if (this.state.distinct) {
+      url += `?table_name=${this.state.table}&column_name=${this.props.visibleColumns[0]}`;
+      return url;
+    }
 
     // if it is valid, proceed
     if (rules && rules["valid"] && rules["valid"] === true) {
@@ -605,6 +616,10 @@ export default class RightPane extends Component {
     this.setState({ rowLimit: parseInt(newLimit, 10) });
   }
 
+  handleOutFileNameChange(event) {
+    this.setState({ outFileName: event.target.value });
+  }
+
   handleGetExactRowCountToggle() {
     this.setState(
       {
@@ -613,6 +628,10 @@ export default class RightPane extends Component {
 			this.createFileName();
 		}*/
     );
+  }
+
+  handleGetDistinctToggle() {
+    this.setState({ distinct: !this.state.distinct });
   }
 
   handleOutputFormatChange(e) {
@@ -673,15 +692,20 @@ export default class RightPane extends Component {
             Options
           </Typography>
 
-          <Grid container spacing={10} alignItems={"center"}>
-            <Grid item sm={10} md={5}>
+          <Grid
+            container
+            spacing={10}
+            alignItems="center"
+            justifyContent="flex-start"
+          >
+            <Grid item>
               {/* ROW LIMIT INPUT BOX */}
               <Tooltip
                 id="tooltip-bottom"
                 title={
                   "Max limit is 250,000 rows. Use Batch Download option for more."
                 }
-                placement="bottom"
+                placement="top"
               >
                 <TextField
                   required
@@ -694,24 +718,58 @@ export default class RightPane extends Component {
                   onChange={this.handleRowLimitChange}
                 />
               </Tooltip>
+              {/* OUTPUT FILE NAME INPUT BOX */}
+              <Tooltip
+                id="fileName"
+                title={"Enter a name for output file."}
+                placement="bottom"
+              >
+                <TextField
+                  required
+                  id="outFileName"
+                  type="text"
+                  label="Output File Name"
+                  value={this.state.outFileName}
+                  style={styleSheet.rowLimitTextField}
+                  margin="normal"
+                  onChange={this.handleOutFileNameChange}
+                />
+              </Tooltip>
             </Grid>
 
-            <Grid item sm={10} md={5}>
+            <Grid item>
               {/* EXACT COUNT CHECK BOX */}
-              <FormControlLabel
-                style={styleSheet.cardMarginLeft}
-                control={
-                  <Checkbox
-                    color="primary"
-                    onChange={this.handleGetExactRowCountToggle}
-                    value="getExactRowCount"
-                  />
-                }
-                checked={this.state.exactRowCount}
-                label={"Get exact row count"}
-              />
+              <Grid item xs={12}>
+                <FormControlLabel
+                  style={styleSheet.cardMarginLeft}
+                  control={
+                    <Checkbox
+                      color="primary"
+                      onChange={this.handleGetExactRowCountToggle}
+                      value="getExactRowCount"
+                    />
+                  }
+                  checked={this.state.exactRowCount}
+                  label={"Get exact row count"}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  style={styleSheet.cardMarginLeft}
+                  control={
+                    <Checkbox
+                      color="secondary"
+                      onChange={this.handleGetDistinctToggle}
+                      value="getDistinct"
+                    />
+                  }
+                  checked={this.state.distinct}
+                  label="Get distinct"
+                  disabled={this.props.visibleColumns.length !== 1}
+                />
+              </Grid>
             </Grid>
-            <Grid>
+            <Grid item>
               <FormControl component="fieldset">
                 <FormLabel component="legend">Output Format</FormLabel>
                 <RadioGroup
@@ -800,6 +858,7 @@ export default class RightPane extends Component {
             }
             prepareHeaders={this.prepareHeaders}
             onResult={this.showAlert}
+            outFileName={this.state.outFileName}
           />
         </Paper>
 

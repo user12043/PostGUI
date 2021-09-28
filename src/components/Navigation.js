@@ -13,7 +13,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import MenuIcon from "@material-ui/icons/Menu";
 import HistoryIcon from "@material-ui/icons/History";
-import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
+import SettingsRoundedIcon from "@material-ui/icons/SettingsRounded";
 
 // import FeatureDiscoveryPrompt from "./FeatureDiscoveryPrompt/FeatureDiscoveryPrompt";
 // import indigo from "@material-ui/core/colors/indigo";
@@ -42,7 +42,7 @@ export default class Navigation extends Component {
     }, 350);
   }
 
-  componentWillReceiveProps(newProps) {
+  /* componentWillReceiveProps(newProps) {
     if (
       (newProps.publicDBStatus === "private" ||
         newProps.publicDBStatus === "read") &&
@@ -54,7 +54,7 @@ export default class Navigation extends Component {
         });
       }
     }
-  }
+  } */
 
   changeSearchTerm(e) {
     /*if (e && ((e.key && e.key === 'Enter') || !e.target.value)) {
@@ -80,16 +80,26 @@ export default class Navigation extends Component {
     });
   };
 
-  handleSettingsToggle = (e) => {
+  handleSettingsToggle = e => {
     this.setState({
       isSettingsModalOpen: !this.state.isSettingsModalOpen,
     });
   };
 
   static getDerivedStateFromProps(props, state) {
+    let isLoginFdpOpen;
+    if (
+      (props.publicDBStatus === "private" || props.publicDBStatus === "read") &&
+      !props.isLoggedIn
+    ) {
+      if (state.isLoginFdpOpen === null) {
+        isLoginFdpOpen = true;
+      }
+    }
     return {
       ...state,
       loginDialogOpen: props.isLoggedIn ? false : state.loginDialogOpen,
+      isLoginFdpOpen,
     };
   }
 
