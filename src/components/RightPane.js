@@ -435,7 +435,7 @@ export default class RightPane extends Component {
         firstRules
       );
       url += conds;
-      url += "&limit=" + this.state.rowLimit;
+      // url += "&limit=" + this.state.rowLimit;
 
       // Add SELECT columns... i.e. which columsn to retrieve
       url += "&select=" + this.props.visibleColumns.join(",");
@@ -444,7 +444,7 @@ export default class RightPane extends Component {
 		            // Add SELECT columns... but this time, only selected columns, NO FILTERS
 		            url += "?select=" + this.state.selectColumns;
 		        }*/
-      url += "?limit=" + this.state.rowLimit;
+      // url += "?limit=" + this.state.rowLimit;
       // TODO: display a Snack bar showing an error!!!
       this.showAlert("Incomplete Query");
     }
@@ -700,7 +700,7 @@ export default class RightPane extends Component {
           >
             <Grid item>
               {/* ROW LIMIT INPUT BOX */}
-              <Tooltip
+              {/* <Tooltip
                 id="tooltip-bottom"
                 title={
                   "Max limit is 250,000 rows. Use Batch Download option for more."
@@ -717,7 +717,7 @@ export default class RightPane extends Component {
                   margin="normal"
                   onChange={this.handleRowLimitChange}
                 />
-              </Tooltip>
+              </Tooltip>*/}
               {/* OUTPUT FILE NAME INPUT BOX */}
               <Tooltip
                 id="fileName"
