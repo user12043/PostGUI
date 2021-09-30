@@ -54,6 +54,7 @@ export default class RightPane extends Component {
       outputFormat: "csv",
       distinct: false,
       outFileName: "output.csv",
+      resultMessage: "",
     };
 
     this.handleRowLimitChange = this.handleRowLimitChange.bind(this);
@@ -67,6 +68,7 @@ export default class RightPane extends Component {
     this.showAlert = this.showAlert.bind(this);
     this.handleGetDistinctToggle = this.handleGetDistinctToggle.bind(this);
     this.handleOutFileNameChange = this.handleOutFileNameChange.bind(this);
+    this.showResultMessage = this.showResultMessage.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -446,7 +448,7 @@ export default class RightPane extends Component {
 		        }*/
       // url += "?limit=" + this.state.rowLimit;
       // TODO: display a Snack bar showing an error!!!
-      this.showAlert("Incomplete Query");
+      // this.showAlert("Incomplete Query");
     }
 
     // Send updated URL to the HistoryPane
@@ -655,6 +657,10 @@ export default class RightPane extends Component {
     );
   }
 
+  showResultMessage(m) {
+    this.setState({ resultMessage: m });
+  }
+
   render() {
     let tableRename = lib.getTableConfig(
       this.props.dbIndex,
@@ -857,9 +863,14 @@ export default class RightPane extends Component {
               )
             }
             prepareHeaders={this.prepareHeaders}
-            onResult={this.showAlert}
+            onResult={this.showResultMessage}
             outFileName={this.state.outFileName}
           />
+          <Grid container justifyContent="space-evenly">
+            <Grid item>
+              <h3>{this.state?.resultMessage}</h3>
+            </Grid>
+          </Grid>
         </Paper>
 
         <Snackbar

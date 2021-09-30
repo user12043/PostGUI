@@ -35,7 +35,7 @@ const ExternalTransfer = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={action}>Start Transfer</Button>
+        <Button onClick={action}>Run Query</Button>
       </CardActions>
     </Card>
   );
