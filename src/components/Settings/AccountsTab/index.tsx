@@ -1,35 +1,39 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Button, IconButton } from '@material-ui/core';
-import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
+import React from "react";
+import TextField from "@material-ui/core/TextField";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Button, IconButton } from "@material-ui/core";
+import GetAppRoundedIcon from "@material-ui/icons/GetAppRounded";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      '& .MuiTextField-root': {
+      "& .MuiTextField-root": {
         margin: theme.spacing(1),
-        width: '40ch',
+        width: "40ch",
       },
-      display: 'flex',
-      justifyContent: 'center'
+      display: "flex",
+      justifyContent: "center",
     },
     fieldsContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-start'
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-start",
     },
     textFieldNames: {
-      width: '100px',
+      width: "100px",
     },
     submitButton: {
-      marginTop: '10px',
-      float: 'right'
-    }
-  }),
+      marginTop: "10px",
+      float: "right",
+    },
+  })
 );
 
-export default function AccountsTab() {
+export default function AccountsTab({
+  userRole,
+}: {
+  userRole: Nullable<string>;
+}) {
   const classes = useStyles();
 
   const onSubmit = () => {
@@ -42,29 +46,56 @@ export default function AccountsTab() {
 
   return (
     <>
-      <form onSubmit={(e) => { e.preventDefault() }} className={classes.root} noValidate autoComplete="off">
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+        }}
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+      >
         <div>
           <div className={classes.fieldsContainer}>
             <span className={classes.textFieldNames}>Email: </span>
-            <TextField label="Required" required id="email" variant="outlined" />
+            <TextField
+              label="Required"
+              required
+              id="email"
+              variant="outlined"
+            />
           </div>
           <div className={classes.fieldsContainer}>
             <span className={classes.textFieldNames}>Password: </span>
-            <TextField label="Required" required id="password" variant="outlined" />
+            <TextField
+              label="Required"
+              required
+              id="password"
+              variant="outlined"
+            />
           </div>
-          <Button className={classes.submitButton} variant="outlined" type="submit" onClick={onSubmit}>
+          <Button
+            className={classes.submitButton}
+            variant="outlined"
+            type="submit"
+            onClick={onSubmit}
+          >
             Save
           </Button>
 
-          <div style={{ clear: 'both' }}></div>
-          <span>SQL History Logs: &nbsp;&nbsp;&nbsp;</span>
-          <IconButton
-            onClick={downloadHistoryLogs}
-            aria-label="downloadSqlHistory"
-          >
-            <GetAppRoundedIcon />
-          </IconButton>
+          <div style={{ clear: "both" }}></div>
+          {userRole === "edituser" ? (
+            <>
+              <span>SQL History Logs: &nbsp;&nbsp;&nbsp;</span>
+              <IconButton
+                onClick={downloadHistoryLogs}
+                aria-label="downloadSqlHistory"
+              >
+                <GetAppRoundedIcon />
+              </IconButton>
+            </>
+          ) : null}
         </div>
       </form>
-    </>);
+    </>
+  );
 }

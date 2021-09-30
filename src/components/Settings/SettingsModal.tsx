@@ -1,16 +1,20 @@
-import React from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import { Dialog, IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import AccountsTab from './AccountsTab';
-import ApiTab from './ApiTab';
+import React from "react";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import { Dialog, IconButton } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import AccountsTab from "./AccountsTab";
+import ApiTab from "./ApiTab";
 
-function TabPanel(props: { children?: React.ReactNode, index: any, value: any }) {
+function TabPanel(props: {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+}) {
   const { children, value, index, ...other } = props;
   return (
     <div
@@ -32,27 +36,31 @@ function TabPanel(props: { children?: React.ReactNode, index: any, value: any })
 function a11yProps(index: any) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    minWidth: '80vw',
-    minHeight: '80vh',
-    maxWidth: 'unset'
+    minWidth: "80vw",
+    minHeight: "80vh",
+    maxWidth: "unset",
   },
   closeButton: {
-    width: '20px',
-    position: 'absolute',
-    right: '10px',
-    top: '8px',
-    zIndex: 10
-  }
+    width: "20px",
+    position: "absolute",
+    right: "10px",
+    top: "8px",
+    zIndex: 10,
+  },
 }));
 
-export default function SettingsModal(props: { open: boolean, handleSettingsToggle: () => void, role: Nullable<string> }) {
+export default function SettingsModal(props: {
+  open: boolean;
+  handleSettingsToggle: () => void;
+  userRole: Nullable<string>;
+}) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -66,18 +74,28 @@ export default function SettingsModal(props: { open: boolean, handleSettingsTogg
       onClose={props.handleSettingsToggle}
       maxWidth={false}
     >
-      <IconButton className={classes.closeButton} size="small" color="inherit" onClick={props.handleSettingsToggle} aria-label="close">
+      <IconButton
+        className={classes.closeButton}
+        size="small"
+        color="inherit"
+        onClick={props.handleSettingsToggle}
+        aria-label="close"
+      >
         <CloseIcon />
       </IconButton>
       <div className={classes.root}>
         <AppBar position="static">
-          <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="simple tabs example"
+          >
             <Tab label="Accounts" {...a11yProps(0)} />
             <Tab label="Api" {...a11yProps(1)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <AccountsTab />
+          <AccountsTab userRole={props.userRole} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <ApiTab />

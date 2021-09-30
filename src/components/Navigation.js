@@ -268,6 +268,7 @@ export default class Navigation extends Component {
           <SettingsModal
             open={this.state.isSettingsModalOpen}
             handleSettingsToggle={this.handleSettingsToggle}
+            userRole={this.props.userRole}
           />
         </AppBar>
       </>
