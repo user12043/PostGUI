@@ -67,7 +67,7 @@ export default class LoginDialog extends Component<
         onClose={this.props.handleLoginDialogCloseClick}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">PostGUI Login</DialogTitle>
+        <DialogTitle id="form-dialog-title">Orion Login</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Provide your credentials for this database, it may allow you more
