@@ -15,3 +15,21 @@ returns integer as $$
 		return c;
 	end
 $$ language plpgsql;
+
+CREATE SCHEMA arcanor;
+
+CREATE ROLE arcanor NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN PASSWORD 'arcanor';
+
+CREATE TABLE arcanor.param (
+	id serial,
+	code varchar NULL,
+	value varchar NULL,
+	CONSTRAINT param_pk PRIMARY KEY (id)
+);
+
+GRANT ALL ON TABLE arcanor.param TO arcanor;
+
+GRANT USAGE ON SCHEMA arcanor TO arcanor;
+
+INSERT INTO arcanor.param (code,value)
+	VALUES ('param1','value1');
