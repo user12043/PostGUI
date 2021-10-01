@@ -412,7 +412,11 @@ export default class RightPane extends Component {
     let url =
       lib.getDbConfig(this.props.dbIndex, "url") +
       "/" +
-      (this.state.distinct ? "rpc/get_distinct" : this.state.table);
+      (this.state.distinct
+        ? this.state.exactRowCount
+          ? "rpc/get_distinct_count"
+          : "rpc/get_distinct"
+        : this.state.table);
 
     if (this.state.distinct) {
       url += `?table_name=${this.state.table}&column_name=${this.props.visibleColumns[0]}`;
