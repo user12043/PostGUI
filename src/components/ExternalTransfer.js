@@ -13,6 +13,7 @@ const ExternalTransfer = ({
   prepareHeaders,
   onResult,
   outFileName,
+  onlyRowCount,
 }) => {
   const action = async () => {
     try {
@@ -21,7 +22,7 @@ const ExternalTransfer = ({
         headers: prepareHeaders(),
         outFileName,
       });
-      onResult(`${response.data?.resultCount} row(s) affected`);
+      onResult(`${response.data?.resultCount} row(s)`);
     } catch (error) {
       onResult(error.message);
     }
@@ -35,7 +36,9 @@ const ExternalTransfer = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={action}>Run Query</Button>
+        <Button onClick={action}>
+          {onlyRowCount ? "Get row count" : "Run Query & Start Transfer"}
+        </Button>
       </CardActions>
     </Card>
   );

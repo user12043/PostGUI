@@ -869,6 +869,7 @@ export default class RightPane extends Component {
             prepareHeaders={this.prepareHeaders}
             onResult={this.showResultMessage}
             outFileName={this.state.outFileName}
+            onlyRowCount={this.state.exactRowCount}
           />
           <Grid container justifyContent="space-evenly">
             <Grid item>
