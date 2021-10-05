@@ -1,18 +1,9 @@
-create or replace function public.get_distinct(table_name text, column_name text)
-returns setof text as $$
+-- Need to implement the function below for all tables
+create or replace function public.get_distinct_actor(column_name text, other_columns text)
+returns setof actor as $$
 	begin
-		return query execute 'select distinct cast( ' || column_name || ' as text) from ' || table_name;
-	end
-$$ language plpgsql;
-
-create or replace function public.get_distinct_count(table_name text, column_name text)
-returns integer as $$
-	declare
-	c integer;
-	begin
-		 execute 'select count(distinct ' || column_name || ') from ' || table_name into c;
-		 perform set_config('response.headers', '[{"content-range": "*/'|| c ||'"}]', true);
-		return c;
+		return query execute 
+	'select ACTOR_ID, FIRST_NAME, LAST_NAME, LAST_UPDATE from (select distinct on (' || column_name || ') ' || column_name || ', '|| other_columns ||' from actor) t';
 	end
 $$ language plpgsql;
 

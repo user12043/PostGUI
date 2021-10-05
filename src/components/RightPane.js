@@ -409,19 +409,13 @@ export default class RightPane extends Component {
 
   // Based on the extracted rules, it builds a PostgREST compliant URL for API call
   buildURLFromRules(rules) {
-    let url =
-      lib.getDbConfig(this.props.dbIndex, "url") +
-      "/" +
-      (this.state.distinct
-        ? this.state.exactRowCount
-          ? "rpc/get_distinct_count"
-          : "rpc/get_distinct"
-        : this.state.table);
+    let url = lib.getDbConfig(this.props.dbIndex, "url") + "/";
+    this.state.distinct && (url += "rpc/get_distinct_");
+    url += this.state.table;
 
-    if (this.state.distinct) {
-      url += `?table_name=${this.state.table}&column_name=${this.props.visibleColumns[0]}`;
-      return url;
-    }
+    const columns = [...this.state.columns];
+    columns.splice(columns.indexOf(this.props.visibleColumns[0]), 1);
+    const distinct_other_columns = columns.join(",");
 
     // if it is valid, proceed
     if (rules && rules["valid"] && rules["valid"] === true) {
@@ -445,6 +439,11 @@ export default class RightPane extends Component {
 
       // Add SELECT columns... i.e. which columsn to retrieve
       url += "&select=" + this.props.visibleColumns.join(",");
+      if (this.state.distinct) {
+        url += `?column_name=${this.props.visibleColumns[0]}`;
+
+        url += `&other_columns=${distinct_other_columns}`;
+      }
     } else {
       /* else if (this.state.selectColumns !== null && this.state.selectColumns !== [] && this.state.selectColumns !== "") {
 		            // Add SELECT columns... but this time, only selected columns, NO FILTERS
@@ -453,6 +452,13 @@ export default class RightPane extends Component {
       // url += "?limit=" + this.state.rowLimit;
       // TODO: display a Snack bar showing an error!!!
       // this.showAlert("Incomplete Query");
+
+      if (this.state.distinct) {
+        url += `?column_name=${this.props.visibleColumns[0]}`;
+
+        url += `&other_columns=${distinct_other_columns}`;
+      }
+      url += "&select=" + this.props.visibleColumns.join(",");
     }
 
     // Send updated URL to the HistoryPane
